@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nullv.dao.VoteMapper">
+    <resultMap id="BaseResultMap" type="com.nullv.pojo.Vote">
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="voting_title" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="voting_type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="voting_description" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="voting_state" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="voting_start_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="voting_end_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="voting_username" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="voting_max_vote" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="modified_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="VoteMap" type="com.nullv.pojo.vo.VoteVO">
+        <id column="id" property="id"></id>
+        <result column="voting_title" property="votingTitle"/>
+        <result column="voting_type" property="votingType"/>
+        <result column="voting_description" property="votingDescription"/>
+        <result column="voting_state" property="votingContent"/>
+        <result column="voting_start_time" property="votingStartTime"/>
+        <result column="voting_end_time" property="votingEndTime"/>
+        <result column="voting_username" property="votingUsername"/>
+        <result column="voting_max_vote" property="votingMaxVote"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modified_time" property="modifiedTime"/>
+
+        <!--    <collection property="属性名" ofType="类名"></collection>-->
+        <collection property="voteContentList" ofType="com.nullv.pojo.VoteContent">
+            <id column="id" property="id"></id>
+            <result column="vote_option_content" property="voteOptionContent"/>
+            <result column="vote_option_description" property="voteOptionDescription"/>
+            <result column="vote_count" property="voteCount"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        , voting_title, voting_type,voting_description, voting_state, voting_start_time, voting_end_time,
+    voting_username, voting_max_vote, create_time, modified_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_vote
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from t_vote
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.nullv.pojo.Vote">
+        insert into t_vote (id, voting_title, voting_description,
+                            voting_state, voting_start_time, voting_end_time,
+                            voting_username, voting_max_vote, create_time,
+                            modified_time)
+        values (#{id,jdbcType=INTEGER}, #{votingTitle,jdbcType=VARCHAR}, #{votingDescription,jdbcType=VARCHAR},
+                #{votingState,jdbcType=INTEGER}, #{votingStartTime,jdbcType=TIMESTAMP},
+                #{votingEndTime,jdbcType=TIMESTAMP},
+                #{votingUsername,jdbcType=VARCHAR}, #{votingMaxVote,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.nullv.pojo.Vote">
+        insert into t_vote
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="votingTitle != null">
+                voting_title,
+            </if>
+            <if test="votingDescription != null">
+                voting_description,
+            </if>
+            <if test="votingContent != null">
+                voting_state,
+            </if>
+            <if test="votingStartTime != null">
+                voting_start_time,
+            </if>
+            <if test="votingEndTime != null">
+                voting_end_time,
+            </if>
+            <if test="votingUsername != null">
+                voting_username,
+            </if>
+            <if test="votingMaxVote != null">
+                voting_max_vote,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="votingTitle != null">
+                #{votingTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="votingDescription != null">
+                #{votingDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="votingContent != null">
+                #{votingState,jdbcType=INTEGER},
+            </if>
+            <if test="votingStartTime != null">
+                #{votingStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="votingEndTime != null">
+                #{votingEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="votingUsername != null">
+                #{votingUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="votingMaxVote != null">
+                #{votingMaxVote,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.nullv.pojo.Vote">
+        update t_vote
+        <set>
+            <if test="votingTitle != null">
+                voting_title = #{votingTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="votingDescription != null">
+                voting_description = #{votingDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="votingContent != null">
+                voting_state = #{votingState,jdbcType=INTEGER},
+            </if>
+            <if test="votingStartTime != null">
+                voting_start_time = #{votingStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="votingEndTime != null">
+                voting_end_time = #{votingEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="votingUsername != null">
+                voting_username = #{votingUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="votingMaxVote != null">
+                voting_max_vote = #{votingMaxVote,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.nullv.pojo.Vote">
+        update t_vote
+        set voting_title       = #{votingTitle,jdbcType=VARCHAR},
+            voting_description = #{votingDescription,jdbcType=VARCHAR},
+            voting_state       = #{votingState,jdbcType=INTEGER},
+            voting_start_time  = #{votingStartTime,jdbcType=TIMESTAMP},
+            voting_end_time    = #{votingEndTime,jdbcType=TIMESTAMP},
+            voting_username    = #{votingUsername,jdbcType=VARCHAR},
+            voting_max_vote    = #{votingMaxVote,jdbcType=INTEGER},
+            create_time        = #{createTime,jdbcType=TIMESTAMP},
+            modified_time      = #{modifiedTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--  获取全部投票活动-->
+    <select id="getAllVote" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_vote where voting_state = 0
+    </select>
+
+    <!--    根据名字模糊查询投票活动-->
+    <select id="getAllVoteByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_vote where voting_state = 0 and voting_title LIKE '%${votingTitle}%'
+    </select>
+
+    <!--    根据投票类型查询投票活动-->
+    <select id="getAllVoteByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_vote where voting_state = 0 and voting_type = #{votingType}
+    </select>
+</mapper>
