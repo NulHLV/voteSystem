@@ -51,6 +51,23 @@ public class Vote {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "id=" + id +
+                ", votingTitle='" + votingTitle + '\'' +
+                ", votingType=" + votingType +
+                ", votingDescription='" + votingDescription + '\'' +
+                ", votingState=" + votingState +
+                ", votingStartTime=" + votingStartTime +
+                ", votingEndTime=" + votingEndTime +
+                ", votingUsername='" + votingUsername + '\'' +
+                ", votingMaxVote=" + votingMaxVote +
+                ", createTime=" + createTime +
+                ", modifiedTime=" + modifiedTime +
+                '}';
+    }
+
     public String getVotingTitle() {
         return votingTitle;
     }
@@ -75,12 +92,12 @@ public class Vote {
         this.votingDescription = votingDescription == null ? null : votingDescription.trim();
     }
 
-    public Integer getVotingContent() {
+    public Integer getVotingState() {
         return votingState;
     }
 
-    public void setVotingContent(Integer votingContent) {
-        this.votingState = votingContent;
+    public void setVotingState(Integer votingState) {
+        this.votingState = votingState;
     }
 
     public Date getVotingStartTime() {

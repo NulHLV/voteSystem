@@ -56,11 +56,11 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.nullv.pojo.Vote">
-        insert into t_vote (id, voting_title, voting_description,
+        insert into t_vote (voting_title, voting_type, voting_description,
                             voting_state, voting_start_time, voting_end_time,
                             voting_username, voting_max_vote, create_time,
                             modified_time)
-        values (#{id,jdbcType=INTEGER}, #{votingTitle,jdbcType=VARCHAR}, #{votingDescription,jdbcType=VARCHAR},
+        values (#{votingTitle,jdbcType=VARCHAR}, #{votingType,jdbcType=INTEGER}, #{votingDescription,jdbcType=VARCHAR},
                 #{votingState,jdbcType=INTEGER}, #{votingStartTime,jdbcType=TIMESTAMP},
                 #{votingEndTime,jdbcType=TIMESTAMP},
                 #{votingUsername,jdbcType=VARCHAR}, #{votingMaxVote,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},

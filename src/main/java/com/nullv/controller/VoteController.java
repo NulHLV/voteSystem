@@ -7,11 +7,15 @@ import com.nullv.pojo.Vote;
 import com.nullv.pojo.VotePage;
 import com.nullv.service.VoteContentServiceImpl;
 import com.nullv.service.VoteServiceImpl;
+import com.nullv.util.DateTimeUtil;
 import com.nullv.util.RES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -100,7 +104,6 @@ public class VoteController {
         RES res = new RES();
         JSONObject jsonObject = JSON.parseObject(json);
         Integer voteItemChecked = Integer.valueOf((String) jsonObject.get("voteItemChecked"));
-        System.out.println();
 
         if (voteContentService.voting(voteItemChecked) != 0) {
             res.setCode(200);
@@ -108,6 +111,61 @@ public class VoteController {
         } else {
             res.setCode(500);
             res.setMessage("投票失败");
+        }
+
+        return JSON.toJSONString(res);
+    }
+
+    /**
+     * 用户提交投票申请
+     *
+     * @Author NulLV
+     * @creat: 2021-05-24 17:53
+     * @return: java.lang.String
+     */
+    @PostMapping("/insertVote")
+    public String insertVote(@RequestBody String json) throws ParseException {
+        RES res = new RES();
+        JSONObject jsonObject = JSON.parseObject(json);
+
+        Vote vote = new Vote();
+
+        //  前端取值
+        String votingTitle = (String) jsonObject.get("votingTitle");
+        Integer votingType = (Integer) jsonObject.get("votingType");
+        String votingDescription = (String) jsonObject.get("votingDescription");
+        String votingForUsername = (String) jsonObject.get("votingForUsername");
+
+        //  时间转换
+        String startTime = (String) jsonObject.get("votingStartTime");
+        String endTime = (String) jsonObject.get("votingEndTime");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date votingStartTime = sdf.parse(startTime);
+        Date votingEndTime = sdf.parse(endTime);
+
+        vote.setVotingTitle(votingTitle);
+        vote.setVotingType(votingType);
+        vote.setVotingStartTime(votingStartTime);
+        vote.setVotingEndTime(votingEndTime);
+        vote.setVotingDescription(votingDescription);
+        vote.setVotingUsername(votingForUsername);
+
+        //  后端设值
+        vote.setVotingMaxVote(0);
+        vote.setVotingState(1);
+        vote.setCreateTime(DateTimeUtil.GetDate());
+        vote.setModifiedTime(DateTimeUtil.GetDate());
+
+        System.out.println(vote.toString());
+
+        int count = voteService.insert(vote);
+
+        if (count != 0) {
+            res.setCode(200);
+            res.setMessage("申请成功");
+        } else {
+            res.setCode(500);
+            res.setMessage("申请失败");
         }
 
         return JSON.toJSONString(res);

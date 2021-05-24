@@ -12,7 +12,7 @@ import java.util.List;
 public interface VoteMapper {
 //    int deleteByPrimaryKey(Integer id);
 //
-//    int insert(Vote record);
+    int insert(Vote record);
 //
 //    int insertSelective(Vote record);
 //

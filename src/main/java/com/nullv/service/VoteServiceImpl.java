@@ -14,6 +14,11 @@ public class VoteServiceImpl implements VoteMapper {
     VoteMapper voteMapper;
 
     @Override
+    public int insert(Vote record) {
+        return voteMapper.insert(record);
+    }
+
+    @Override
     public List<Vote> getAllVote() {
         return voteMapper.getAllVote();
     }
